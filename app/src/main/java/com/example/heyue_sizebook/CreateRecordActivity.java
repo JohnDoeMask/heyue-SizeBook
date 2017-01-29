@@ -317,7 +317,9 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
     private Boolean checkPersonName(String name){
         for (Record r : recordList) {
             if (r.getPersonName().equals(name)) {
-                if (index != -1) continue;
+                if (index != -1) {
+                    if (newRecord.getPersonName().equals(name)) continue;
+                }
                 return true;
             }
         }
