@@ -22,6 +22,8 @@ public class Record {
     }
 
     public String getPersonName() {
+        if (personName == null) return null;
+        if (personName.isEmpty()) return null;
         return personName;
     }
 
@@ -63,6 +65,7 @@ public class Record {
         if (personName.isEmpty()) {
             throw new InvalidRecordException();
         }
+
         this.personName = personName;
     }
 

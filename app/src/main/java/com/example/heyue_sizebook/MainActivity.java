@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,11 +30,12 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
     private static final String FILENAME = "file.sav";
     private ArrayList<Record> recordList = new ArrayList<>();
     private ArrayAdapter<Record> adapter;
     private ListView oldRecordList;
-    private EditText bodyText;
+    private TextView countTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         Button createButton = (Button) findViewById(R.id.create);
 
         oldRecordList = (ListView) findViewById(R.id.oldRecordList);
+        countTextView = (TextView) findViewById(R.id.count_of_people);
+
 
         oldRecordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 R.layout.list_item, recordList);
         oldRecordList.setAdapter(adapter);
         loadAllRecord();
+        countTextView.setText(String.format("Count: %s", recordList.size()));
     }
 
     /**
@@ -94,7 +99,12 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // TODO delete the recor
+                        adapter.remove(recordList.get(position));
+                        recordList.remove(position);
+                        adapter.notifyDataSetChanged();
+                        saveInFile();
+                        countTextView.setText(String.format("Count: %s", recordList.size()));
+
                     }
                 })
                 .setPositiveButton("VIEW DETAIL/EDIT", new DialogInterface.OnClickListener() {
@@ -136,25 +146,25 @@ public class MainActivity extends AppCompatActivity {
             throw new RuntimeException();
         }
     }
-//    private void saveInFile() {
-//        try {
-//            FileOutputStream fos = openFileOutput(FILENAME,
-//                    Context.MODE_PRIVATE);
-//            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
-//
-//            Gson gson = new Gson();
-//
-//            gson.toJson(recordList, out);
-//
-//            out.flush();
-//
-//            fos.close();
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException();
-//        } catch (IOException e) {
-//            throw new RuntimeException();
-//        }
-//    }
+    private void saveInFile() {
+        try {
+            FileOutputStream fos = openFileOutput(FILENAME,
+                    Context.MODE_PRIVATE);
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+
+            Gson gson = new Gson();
+
+            gson.toJson(recordList, out);
+
+            out.flush();
+
+            fos.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException();
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+    }
 
     public void createRecord(View v) {
         Intent intent = new Intent(MainActivity.this, CreateRecordActivity.class);

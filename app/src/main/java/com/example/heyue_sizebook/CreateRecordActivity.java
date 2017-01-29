@@ -14,10 +14,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -28,6 +31,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 /**
  * Created by heyuehuang on 2017-01-28.
  */
@@ -46,8 +51,8 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
     private EditText hipSizeEditText;
     private EditText inseamSizeEditText;
     private EditText commentEditText;
-    private Map<EditText, String> editTextMap = new HashMap<>();
     private ArrayList<EditText> editTextList = new ArrayList<>();
+    private int index = -1;
 
     private Button completeRecordButton;
 
@@ -72,14 +77,6 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
         inseamSizeEditText = (EditText) findViewById(R.id.inseam_size);
         commentEditText = (EditText) findViewById(R.id.comment_size);
 
-//        editTextMap.put(recordDateEditText, null);
-//        editTextMap.put(bustSizeEditText, null);
-//        editTextMap.put(chestSizeEditText, null);
-//        editTextMap.put(waistSizeEditText, null);
-//        editTextMap.put(hipSizeEditText, null);
-//        editTextMap.put(inseamSizeEditText, null);
-//        editTextMap.put(commentEditText, null);
-
         completeRecordButton = (Button) findViewById(R.id.complete);
         completeRecordButton.setOnClickListener(this);
 
@@ -93,12 +90,16 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
+        loadAllRecord();
+
         Gson gson = new Gson();
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
             String jsonStr = extras.getString("EDIT");
             newRecord = gson.fromJson(jsonStr, Record.class);
+            index = getIndex(newRecord);
+            Log.i("Debug", Integer.toString(index));
             newRecordDate = newRecord.getDate();
             personNameEditText.setText(newRecord.getPersonName());
             if (newRecord.getDate() != null) {
@@ -150,46 +151,57 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
         Record newRecord = new Record();
         // if record name is not given
         if (personName.isEmpty()) {
-            personNameEditText.setError("Record name is empty!");
+            personNameEditText.setError("Person's name is empty!");
             return;
-        } else if (!neckSizeEditText.getText().toString().isEmpty()) {
+        }
+
+        if (checkPersonName(personName)) {
+            personNameEditText.setError("The person already exits!");
+            return;
+        }
+        if (!neckSizeEditText.getText().toString().isEmpty()) {
             // if neckSize isn't positive
             double neckSize =parseDouble(neckSizeEditText.getText().toString());
-
             if (!checkSize(neckSize, neckSizeEditText)) return;
-            Log.i("Debug", Double.toString(neckSize));
             newRecord.setNeckSize(neckSize);
-        } else if (!bustSizeEditText.getText().toString().isEmpty()) {
+        }
+        if (!bustSizeEditText.getText().toString().isEmpty()) {
             // if bustSize isn't positive
             double bustSize = parseDouble(bustSizeEditText.getText().toString());
             if (!checkSize(bustSize, bustSizeEditText)) return;
             newRecord.setBustSize(bustSize);
-        } else if (!chestSizeEditText.getText().toString().isEmpty()) {
+        }
+        if (!chestSizeEditText.getText().toString().isEmpty()) {
             // if chestSize isn't positive
             double chestSize = parseDouble(chestSizeEditText.getText().toString());
             if (!checkSize(chestSize, chestSizeEditText)) return;
             newRecord.setChestSize(chestSize);
-        } else if (!waistSizeEditText.getText().toString().isEmpty()) {
+        }
+        if (!waistSizeEditText.getText().toString().isEmpty()) {
             // if WaistSize isn't positive
             double waistSize = parseDouble(waistSizeEditText.getText().toString());
             if (!checkSize(waistSize, waistSizeEditText)) return;
             newRecord.setWaistSize(waistSize);
-        } else if (!hipSizeEditText.getText().toString().isEmpty()) {
+        }
+        if (!hipSizeEditText.getText().toString().isEmpty()) {
             // if HipSize isn't positive
             double hipSize = parseDouble(hipSizeEditText.getText().toString());
             if (!checkSize(hipSize, hipSizeEditText)) return;
             newRecord.setHipSize(hipSize);
-        } else if (!inseamSizeEditText.getText().toString().isEmpty()) {
+        }
+        if (!inseamSizeEditText.getText().toString().isEmpty()) {
             // if InseamSize isn't positive
             double inseamSize = parseDouble(inseamSizeEditText.getText().toString());
             if (!checkSize(inseamSize, inseamSizeEditText)) return;
             newRecord.setInseamSize(inseamSize);
-        } else if (!commentEditText.getText().toString().isEmpty()) {
+        }
+        if (!commentEditText.getText().toString().isEmpty()) {
             // if InseamSize isn't positive
             String comment = commentEditText.getText().toString();
             Log.i("Debug", comment);
             newRecord.setComment(comment);
-        } else if (!recordDateEditText.getText().toString().isEmpty()) {
+        }
+        if (!recordDateEditText.getText().toString().isEmpty()) {
 //            Log.i("Debug", "date is not empty");
             newRecord.setDate(newRecordDate);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd");
@@ -199,7 +211,11 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
             Log.i("Debug", "Done!!!!!!");
             newRecord.setPersonName(personName);
 //            newRecord.setDate(newRecordDate);
-            recordList.add(newRecord);
+            if (index != -1) {
+                recordList.set(index, newRecord);
+            } else {
+                recordList.add(newRecord);
+            }
             saveInFile();
             finish();
 
@@ -211,9 +227,9 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-    private Boolean checkSize(double checknumber, EditText editText) {
-        if (checknumber > 0 ){
-            editText.setText(Double.toString(checknumber));
+    private Boolean checkSize(double checkNumber, EditText editText) {
+        if (checkNumber > 0 ){
+            editText.setText(Double.toString(checkNumber));
             return true;
         }
         editText.setError("Input Number must be positive number!");
@@ -266,5 +282,45 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
             toast.show();
         }
         return num;
+    }
+
+    private void loadAllRecord() {
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+
+            Gson gson = new Gson();
+            // Taken from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
+            // 2017-01-26
+
+            recordList = gson.fromJson(in, new TypeToken<ArrayList<Record>>(){}.getType());
+            fis.close();
+        } catch (FileNotFoundException e) {
+            recordList = new ArrayList<Record>();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            throw new RuntimeException();
+        }
+    }
+
+    private int getIndex(Record record) {
+        int index = 0;
+        for (Record r : recordList) {
+            if (r.getPersonName().equals(record.getPersonName())) {
+                break;
+            }
+            ++index;
+        }
+        return index;
+    }
+
+    private Boolean checkPersonName(String name){
+        for (Record r : recordList) {
+            if (r.getPersonName().equals(name)) {
+                if (index != -1) continue;
+                return true;
+            }
+        }
+        return false;
     }
 }
