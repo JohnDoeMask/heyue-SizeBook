@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/person_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal"
+        android:hint="Please enter a Person's name "/>
+
+    <EditText
+        android:id="@+id/record_date"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal"
+        android:hint="Please select a date "/>
+
+    <EditText
+        android:id="@+id/neck_size"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal"
+        android:hint="Please enter neck's size "/>
+
+    <EditText
+        android:id="@+id/bust_size"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal"
+        android:hint="Please enter bust's size "/>
+
+    <EditText
+        android:id="@+id/chest_size"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal"
+        android:hint="Please enter chest's size "/>
+
+    <EditText
+        android:id="@+id/waist_size"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal"
+        android:hint="Please enter waist's size "/>
+
+
+    <EditText
+        android:id="@+id/hip_size"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal"
+        android:hint="Please enter hip's size "/>
+
+    <EditText
+        android:id="@+id/inseam_size"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal"
+        android:hint="Please enter inseam's size "/>
+
+    <EditText
+        android:id="@+id/comment_size"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal"
+        android:hint="Please enter comment "/>
+
+    <Button
+        android:id="@+id/complete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Complete" />
+
+</LinearLayout>
