@@ -99,11 +99,9 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
             String jsonStr = extras.getString("EDIT");
             newRecord = gson.fromJson(jsonStr, Record.class);
             index = getIndex(newRecord);
-            Log.i("Debug", Integer.toString(index));
             newRecordDate = newRecord.getDate();
             personNameEditText.setText(newRecord.getPersonName());
             if (newRecord.getDate() != null) {
-                Log.i("Debug",sdf.format(newRecordDate.getTime()));
                 recordDateEditText.setText(sdf.format(newRecordDate.getTime()));
             }
             if (newRecord.getNeckSize() != 0) {
@@ -125,10 +123,8 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
                 inseamSizeEditText.setText(Double.toString(newRecord.getInseamSize()));
             }
             if (newRecord.getComment() != null) {
-                Log.i("Debug", newRecord.getComment());
                 commentEditText.setText(newRecord.getComment());
             }
-            //Log.i("Debug", newRecord.getComment());
         }
     }
 
@@ -139,7 +135,6 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
             newRecordDate.set(Calendar.MONTH, monthOfYear);
             newRecordDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             recordDateEditText.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-            Log.i("Debug", recordDateEditText.getText().toString());
         }
     };
 
@@ -198,19 +193,14 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
         if (!commentEditText.getText().toString().isEmpty()) {
             // if InseamSize isn't positive
             String comment = commentEditText.getText().toString();
-            Log.i("Debug", comment);
             newRecord.setComment(comment);
         }
         if (!recordDateEditText.getText().toString().isEmpty()) {
-//            Log.i("Debug", "date is not empty");
             newRecord.setDate(newRecordDate);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd");
-//            Log.i("Debug", sdf.format(newRecordDate.getTime()));
         }
         try {
-            Log.i("Debug", "Done!!!!!!");
             newRecord.setPersonName(personName);
-//            newRecord.setDate(newRecordDate);
             if (index != -1) {
                 recordList.set(index, newRecord);
             } else {
@@ -240,9 +230,7 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (v == completeRecordButton) {
-            Log.i("Debug", "button clicked");
             createRecord();
-
 
         }
     }
@@ -274,10 +262,8 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
             num = Double.parseDouble(str);
             DecimalFormat df = new DecimalFormat("#,##0.0");
             num = Double.valueOf(df.format(num));
-            Log.i("Debug", Double.toString(num));
             return num;
         } catch (NumberFormatException e) {
-            Log.i("Debug", e.getMessage());
             Toast toast = Toast.makeText(this, "Expect a number", Toast.LENGTH_SHORT);
             toast.show();
         }
