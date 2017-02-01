@@ -51,7 +51,7 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
     private EditText hipSizeEditText;
     private EditText inseamSizeEditText;
     private EditText commentEditText;
-    private ArrayList<EditText> editTextList = new ArrayList<>();
+    //private ArrayList<EditText> editTextList = new ArrayList<>();
     private int index = -1;
 
     private Button completeRecordButton;
