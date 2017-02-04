@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("VIEW DETAIL/EDIT", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // TODO intent
                         Intent intent = new Intent(MainActivity.this, CreateRecordActivity.class);
                         Gson gson = new Gson();
                         String recordStr = gson.toJson(recordList.get(position));
@@ -165,11 +164,5 @@ public class MainActivity extends AppCompatActivity {
             throw new RuntimeException();
         }
     }
-
-    public void createRecord(View v) {
-        Intent intent = new Intent(MainActivity.this, CreateRecordActivity.class);
-        startActivity(intent);
-    }
-
 
 }

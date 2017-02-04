@@ -51,7 +51,6 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
     private EditText hipSizeEditText;
     private EditText inseamSizeEditText;
     private EditText commentEditText;
-    //private ArrayList<EditText> editTextList = new ArrayList<>();
     private int index = -1;
 
     private Button completeRecordButton;
@@ -128,6 +127,13 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v == completeRecordButton) {
+            createRecord();
+
+        }
+    }
     DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -224,15 +230,6 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
         }
         editText.setError("Input Number must be positive number!");
         return false;
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        if (v == completeRecordButton) {
-            createRecord();
-
-        }
     }
 
     private void saveInFile() {

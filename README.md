@@ -20,7 +20,7 @@ Assignment 1 of CMPUT 301 at University of Alberta
 - [Android Developers](https://developer.android.com/index.html)
 - [ExiaSR-Tracker](https://github.com/ExiaSR/HabitTracker)
 - [Stackoverflow - Round a Double to one decimal place](http://stackoverflow.com/questions/15193739/how-do-i-round-a-double-to-one-decimal-place)
-
+- [LonelyTwitter - from lab](https://github.com/joshua2ua/lonelyTwitter)
 # License
 This software is under [MIT License](https://opensource.org/licenses/MIT)
 ```
