@@ -14,7 +14,7 @@ Assignment 1 of CMPUT 301 at University of Alberta
 - This app is backward compatible till API 18.
 
 # Video URL
-[Youtube](https://www.youtube.com/watch?v=LHoTSgj_4qg)
+[Youtube](https://www.youtube.com/watch?v=ZkbbxbfW8kY)
 
 # Credit
 - [Android Developers](https://developer.android.com/index.html)
